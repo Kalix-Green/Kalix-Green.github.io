@@ -1,3 +1,8 @@
+```
+title: "我的网站快速入门指南"
+permalink: /mybook/index/
+```
+
 # 测试网站
 
 ## 如何使用Jekyll theme建立个人网站

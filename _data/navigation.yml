@@ -1,7 +1,7 @@
 # main links
 main:
-  - title: "快速入门指南"
-    url: /docs/index.md
+  - title: "我的网站快速入门指南"
+    url: /mybook/index/
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
   # - title: "Sample Posts"
