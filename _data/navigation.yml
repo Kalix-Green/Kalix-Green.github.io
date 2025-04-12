@@ -1,12 +1,9 @@
-# main links
+# main links links
 main:
-  - title: "我的网站快速入门指南"
-    url: /mybook/index/
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
+  - title: "简介"
+    url: /about/
+  - title: "博客"
+    url: /posts/
+
+
+

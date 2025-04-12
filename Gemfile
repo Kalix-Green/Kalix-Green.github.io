@@ -1,2 +1,4 @@
 source "https://rubygems.org"
-gemspec
+
+# use local theme gem for testing
+gem "minimal-mistakes-jekyll"
