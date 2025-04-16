@@ -105,7 +105,7 @@ PS D:\My-TTS\my-fish-speech-1.5\fish-speech-1.5.0\checkpoints> git clone https:/
 切回文件目录：
 
 ```powershell
-PS D:\My-TTS\my-fish-speech-1.5\fish-speech-1.5.0> cd ..
+PS D:\My-TTS\my-fish-speech-1.5\fish-speech-1.5.0\checkpoints> cd ..
 ```
 
 基于当前目录，创建一个venv的python的虚拟环境：
