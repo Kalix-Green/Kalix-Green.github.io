@@ -249,8 +249,8 @@ learning-notes:
         url: /learning-notes/ai-for-games-third-edition/   
 
 
-#game-dev，独游开发
-game-dev:
+#game-dev-doc1，独游开发
+game-dev-doc1:
   - title: "游戏分析测评报告"
     children:
       - title: "网络竞技"
