@@ -298,7 +298,7 @@ defaults:
       toc_sticky: true
       sidebar:
         nav: "learning-notes"
-  # _game-dev，独游开发
+  # _game-dev-doc1，独游开发
   - scope:
       path: "_game-dev-doc1"
       type: game-dev-doc1
