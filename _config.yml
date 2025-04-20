@@ -235,7 +235,7 @@ collections:
   learning-notes:
     output: true
     permalink: /:collection/:path/
-  game-dev:
+  game-dev-doc1:
     output: true
     permalink: /:collection/:path/
 
@@ -300,8 +300,8 @@ defaults:
         nav: "learning-notes"
   # _game-dev，独游开发
   - scope:
-      path: "_game-dev"
-      type: game-dev
+      path: "_game-dev-doc1"
+      type: game-dev-doc1
     values:
       layout: single
       read_time: false
@@ -310,4 +310,4 @@ defaults:
       comments: false
       toc_sticky: true
       sidebar:
-        nav: "game-dev"
+        nav: "game-dev-doc1"

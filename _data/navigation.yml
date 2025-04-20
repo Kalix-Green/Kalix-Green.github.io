@@ -11,7 +11,7 @@ main:
   - title: "学习笔记"
     url: /learning-notes/
   - title: "独游开发"
-    url: /game-dev/
+    url: /game-dev-doc1/
 
 #project-analysis，项目洞察
 project-analysis:
@@ -254,44 +254,44 @@ game-dev:
   - title: "游戏分析测评报告"
     children:
       - title: "网络竞技"
-        url: /game-dev/yxfxcpbg-wljj/
+        url: /game-dev-doc1/yxfxcpbg-wljj/
       - title: "现实模拟"
-        url: /game-dev/yxfxcpbg-xsmn/
+        url: /game-dev-doc1/yxfxcpbg-xsmn/
       - title: "策略架空"
-        url: /game-dev/yxfxcpbg-cljk/
+        url: /game-dev-doc1/yxfxcpbg-cljk/
       - title: "独立制作"
-        url: /game-dev/yxfxcpbg-dlzz/
+        url: /game-dev-doc1/yxfxcpbg-dlzz/
   - title: "策划"
     children:
       - title: "策划"
-        url: /game-dev/ch-ch/
+        url: /game-dev-doc1/ch-ch/
   - title: "程序"
     children:
       - title: "引擎"
-        url: /game-dev/cx-engine/
+        url: /game-dev-doc1/cx-engine/
       - title: "着色器"
-        url: /game-dev/cx-shader/
+        url: /game-dev-doc1/cx-shader/
   - title: "美术"
     children:
       - title: "2D"
-        url: /game-dev/ms-2d/
+        url: /game-dev-doc1/ms-2d/
       - title: "3D"
-        url: /game-dev/ms-3d/
+        url: /game-dev-doc1/ms-3d/
   - title: "声音"
     children:
       - title: "声音基础知识"
-        url: /game-dev/sy-syjczs/
+        url: /game-dev-doc1/sy-syjczs/
       - title: "音乐"
-        url: /game-dev/sy-music/
+        url: /game-dev-doc1/sy-music/
       - title: "音效"
-        url: /game-dev/sy-sfx/
+        url: /game-dev-doc1/sy-sfx/
   - title: "运营"
     children:
       - title: "寻找发行商"
-        url: /game-dev/yy-distribution/
+        url: /game-dev-doc1/yy-distribution/
       - title: "广告宣发"
-        url: /game-dev/yy-advertisement/
+        url: /game-dev-doc1/yy-advertisement/
       - title: "粉丝引流"
-        url: /game-dev/yy-fans/
+        url: /game-dev-doc1/yy-fans/
 
 
