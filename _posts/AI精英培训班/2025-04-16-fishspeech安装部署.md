@@ -3,9 +3,9 @@ title: "Fishspeech-1.5本地化部署"
 categories: 人工智能
 tags:
     - TTS
-permalink: /:categories/:title.html
+permalink: /posts/:title.html
 toc: true
-author_profile: false
+author_profile: true
 
 ---
 
@@ -246,5 +246,3 @@ start cmd /k ".\venv\Scripts\activate && python.exe .\tools\run_webui.py"
 ```
 
 并将此`start-venv.bat`脚本文件的快捷方式发送到桌面，方便下次调用，执行之后，即可打开UI界面。
-
-

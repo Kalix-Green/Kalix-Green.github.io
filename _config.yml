@@ -223,11 +223,28 @@ compress_html:
     envs: development
 
 
+
+# Collections
+collections:
+  project-analysis:
+    output: true
+    permalink: /:collection/:path/
+  software-guide:
+    output: true
+    permalink: /:collection/:path/
+  learning-notes:
+    output: true
+    permalink: /:collection/:path/
+  game-dev:
+    output: true
+    permalink: /:collection/:path/
+
+
 # Defaults
 defaults:
-  # _posts
+  # _posts，博客档案
   - scope:
-      path: ""
+      path: "_posts"
       type: posts
     values:
       layout: single
@@ -242,4 +259,55 @@ defaults:
     values:
       layout: single
       author_profile: true
-
+  # _project-analysis，项目洞察
+  - scope:
+      path: "_project-analysis"
+      type: project-analysis
+    values:
+      layout: single
+      read_time: false
+      author_profile: false
+      share: false
+      comments: false
+      toc_sticky: true
+      sidebar:
+        nav: "project-analysis"
+  # _software-guide，软件教程
+  - scope:
+      path: "_software-guide"
+      type: software-guide
+    values:
+      layout: single
+      read_time: false
+      author_profile: false
+      share: false
+      comments: false
+      toc_sticky: true
+      sidebar:
+        nav: "software-guide"
+  # _learning-notes，学习笔记
+  - scope:
+      path: "_learning-notes"
+      type: learning-notes
+    values:
+      layout: single
+      read_time: false
+      author_profile: false
+      share: false
+      comments: false
+      toc_sticky: true
+      sidebar:
+        nav: "learning-notes"
+  # _game-dev，独游开发
+  - scope:
+      path: "_game-dev"
+      type: game-dev
+    values:
+      layout: single
+      read_time: false
+      author_profile: false
+      share: false
+      comments: false
+      toc_sticky: true
+      sidebar:
+        nav: "game-dev"

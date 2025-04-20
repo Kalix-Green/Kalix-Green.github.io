@@ -1,9 +1,297 @@
 # main links links
 main:
-  - title: "简介"
+  - title: "网站概述"
     url: /about/
-  - title: "博客"
+  - title: "博客档案"
     url: /posts/
+  - title: "项目洞察"
+    url: /project-analysis/
+  - title: "软件教程"
+    url: /software-guide/
+  - title: "学习笔记"
+    url: /learning-notes/
+  - title: "独游开发"
+    url: /game-dev/
 
+#project-analysis，项目洞察
+project-analysis:
+  - title: "种植项目"
+    children:
+      - title: "辣椒种植"
+        url: /project-analysis/zzxm-lj-analysis/
+      - title: "红薯种植"
+        url: /project-analysis/zzxm-hs-analysis/
+      - title: "西瓜种植"
+        url: /project-analysis/zzxm-xg-analysis/
+      - title: "甜瓜种植"
+        url: /project-analysis/zzxm-tg-analysis/
+      - title: "南瓜种植"
+        url: /project-analysis/zzxm-ng-analysis/
+      - title: "主粮种植"
+        url: /project-analysis/zzxm-zl-analysis/
+  - title: "小说项目"
+    children:
+      - title: "历史架空"
+        url: /project-analysis/xs-lsjk-analysis/
+      - title: "玄幻修仙"
+        url: /project-analysis/xs-xhxx-analysis/
+      - title: "江湖武侠"
+        url: /project-analysis/xs-jhwx-analysis/
+      - title: "动漫同人"
+        url: /project-analysis/xs-dmtr-analysis/
+      - title: "惊悚恐怖"
+        url: /project-analysis/xs-jskb-analysis/
+      - title: "侦探悬疑"
+        url: /project-analysis/xs-ztxy-analysis/
+      - title: "都市言情"
+        url: /project-analysis/xs-dsyq-analysis/
+      - title: "历史归纳"
+        url: /project-analysis/xs-lsgn-analysis/
+      - title: "科技科幻"
+        url: /project-analysis/xs-kjkh-analysis/
+  - title: "主播网红"
+    children:
+      - title: "游戏主播"
+        url: /project-analysis/wh-yxzb-analysis/
+      - title: "B站UP主"
+        url: /project-analysis/wh-bzup-analysis/
+  - title: "文字大V"
+    children:
+      - title: "知乎"
+        url: /project-analysis/dv-zh-analysis/
+      - title: "小黑盒"
+        url: /project-analysis/dv-xhh-analysis/
+  - title: "独立游戏"
+    children:
+      - title: "love2d引擎"
+        url: /project-analysis/dlyx-love2d-analysis/
+      - title: "godot引擎"
+        url: /project-analysis/dlyx-godot-analysis/
+      - title: "unity引擎"
+        url: /project-analysis/dlyx-unity-analysis/
+  - title: "日常财务"
+    children:
+      - title: "权责发生制"
+        url: /project-analysis/rccw-qzfsz-analysis/
+      - title: "收付实现制"
+        url: /project-analysis/rccw-sfsxz-analysis/
+  - title: "营收详解"
+    children:
+      - title: "非财务人员的财务管理"
+        url: /project-analysis/ysxj-cwgl-analysis/
+      - title: "非人力资源经理的人力资源管理"
+        url: /project-analysis/ysxj-rlzygl-analysis/
+      - title: "资本性收入"
+        url: /project-analysis/ysxj-zbsr-analysis/
+      - title: "劳动性收入"
+        url: /project-analysis/ysxj-ldsr-analysis/
+  - title: "创业推演"
+    children:
+      - title: "经营类游戏"
+        url: /project-analysis/cyty-jylyx-analysis/
+      - title: "日常观察分析"
+        url: /project-analysis/cyty-rcgcfx-analysis/
+
+
+
+#software-guide，软件教程
+software-guide:
+  - title: "绘图"
+    children:
+      - title: "思维导图"
+        url: /software-guide/ht-mindmap-guide/
+      - title: "Drawio"
+        url: /software-guide/ht-drawio-guide/
+  - title: "视频"
+    children:
+      - title: "OBS Studio"
+        url: /software-guide/sp-obs-guide/
+      - title: "字幕语音"
+        url: /software-guide/sp-zmyy-guide/
+      - title: "剪辑分解"
+        url: /software-guide/sp-jjfj-guide/
+      - title: "Lossless Scaling"
+        url: /software-guide/sp-LosslessScaling-guide/
+      - title: "MKVToolNix"
+        url: /software-guide/sp-mkvtoolnix-guide/
+      - title: "FFmpeg"
+        url: /software-guide/sp-ffmpeg-guide/
+  - title: "音频"
+    children:
+      - title: "Bfxr"
+        url: /software-guide/yp-bfxr-guide/
+      - title: "Audacity"
+        url: /software-guide/yp-audacity-guide/
+  - title: "图形/图像"
+    children:
+      - title: "Aseprite"
+        url: /software-guide/txtx-aseprite-guide/
+      - title: "GIMP"
+        url: /software-guide/txtx-gimp-guide/
+      - title: "Blender"
+        url: /software-guide/txtx-blender-guide/
+      - title: "Krita"
+        url: /software-guide/txtx-krita-guide/
+      - title: "Card Creator"
+        url: /software-guide/txtx-CardCreator-guide/
+      - title: "ImageMagick"
+        url: /software-guide/txtx-ImageMagick-guide/
+  - title: "语音输入"
+    children:
+      - title: "CapsWriter-Offline"
+        url: /software-guide/yysr-CapsWriterOffline-guide/
+  - title: "策划验证"
+    children:
+      - title: "Tabletop Simulator"
+        url: /software-guide/chyz-TabletopSimulator-guide/
+  - title: "文本"
+    children:
+      - title: "TypeDown"
+        url: /software-guide/wb-typedown-guide/
+      - title: "Pandoc"
+        url: /software-guide/wb-pandoc-guide/
+      - title: "Doxygen"
+        url: /software-guide/wb-doxygen-guide/
+      - title: "LDoc"
+        url: /software-guide/wb-ldoc-guide/
+      - title: "TeXstudio"
+        url: /software-guide/wb-texstudio-guide/
+  - title: "开发/运维"
+    children:
+      - title: "Git"
+        url: /software-guide/kfyw-git-guide/
+      - title: "VS Code"
+        url: /software-guide/kfyw-vscode-guide/
+      - title: "Winscp/putty/WindTerm"
+        url: /software-guide/kfyw-winscp-guide/
+      - title: "Docker Desktop"
+        url: /software-guide/kfyw-docker-guide/
+      - title: "Linux"
+        url: /software-guide/kfyw-linux-guide/
+      - title: "VMware/Virtual Box"
+        url: /software-guide/kfyw-vmware-guide/
+  - title: "其他"
+    children:
+      - title: "everything"
+        url: /software-guide/other-everything-guide/
+      - title: "百度网盘"
+        url: /software-guide/other-bdwp-guide/
+      - title: "迅雷"
+        url: /software-guide/other-xunlei-guide/
+
+#learning-notes，学习笔记
+learning-notes:
+  - title: "人工智能"
+    children:
+      - title: "AI精英培训班1"
+        url: /learning-notes/ai-training1/
+      - title: "AI精英培训班2"
+        url: /learning-notes/ai-training2/
+      - title: "ASR"
+        url: /learning-notes/ai-ASR/
+      - title: "LLM"
+        url: /learning-notes/ai-LLM/
+      - title: "TTS"
+        url: /learning-notes/ai-TTS/
+      - title: "Embedding Model"
+        url: /learning-notes/ai-EmbeddingModel/  
+      - title: "Rerank Model"
+        url: /learning-notes/ai-RerankModel/
+      - title: "RAG"
+        url: /learning-notes/ai-RAG/
+  - title: "编程语言"
+    children:
+      - title: "Lua语言"
+        url: /learning-notes/lua-programming/
+      - title: "LDoc文档生成器"
+        url: /learning-notes/lua-ldoc/
+      - title: "love2D游戏框架"
+        url: /learning-notes/lua-love2d/
+      - title: "JavaScript语言"
+        url: /learning-notes/javascript-programming/
+      - title: "C#语言"
+        url: /learning-notes/csharp-programming/
+      - title: "Python语言"
+        url: /learning-notes/python-programming/
+      - title: "C/C++语言"
+        url: /learning-notes/cpp-programming/
+      - title: "Ruby语言"
+        url: /learning-notes/ruby-programming/
+      - title: "Shell语言"
+        url: /learning-notes/shell-programming/
+      - title: "Perl语言"
+        url: /learning-notes/perl-programming/
+  - title: "数据库"
+    children:
+      - title: "关系型数据库"
+        url: /learning-notes/relational-database/
+      - title: "向量数据库"
+        url: /learning-notes/vector-database/
+      - title: "图数据库"
+        url: /learning-notes/graph-database/
+  - title: "计算机图形学"
+    children:
+      - title: "《计算机图形学（第四版）》"
+        url: /learning-notes/computer-graphics-with-opengl-fourth-edition/ 
+      - title: "Shader着色器"
+        url: /learning-notes/shader/
+      - title: "OpenGL"
+        url: /learning-notes/opengl/ 
+      - title: "Vulkan"
+        url: /learning-notes/vulkan/
+  - title: "游戏设计艺术（项目统筹）"
+    children:
+      - title: "《游戏设计艺术（第三版）》"
+        url: /learning-notes/the-art-of-game-design-third-edition/   
+  - title: "游戏中的人工智能（伪AI/游戏人机）"
+    children:
+      - title: "《游戏中的人工智能（第三版）》"
+        url: /learning-notes/ai-for-games-third-edition/   
+
+
+#game-dev，独游开发
+game-dev:
+  - title: "游戏分析测评报告"
+    children:
+      - title: "网络竞技"
+        url: /game-dev/yxfxcpbg-wljj/
+      - title: "现实模拟"
+        url: /game-dev/yxfxcpbg-xsmn/
+      - title: "策略架空"
+        url: /game-dev/yxfxcpbg-cljk/
+      - title: "独立制作"
+        url: /game-dev/yxfxcpbg-dlzz/
+  - title: "策划"
+    children:
+      - title: "策划"
+        url: /game-dev/ch-ch/
+  - title: "程序"
+    children:
+      - title: "引擎"
+        url: /game-dev/cx-engine/
+      - title: "着色器"
+        url: /game-dev/cx-shader/
+  - title: "美术"
+    children:
+      - title: "2D"
+        url: /game-dev/ms-2d/
+      - title: "3D"
+        url: /game-dev/ms-3d/
+  - title: "声音"
+    children:
+      - title: "声音基础知识"
+        url: /game-dev/sy-syjczs/
+      - title: "音乐"
+        url: /game-dev/sy-music/
+      - title: "音效"
+        url: /game-dev/sy-sfx/
+  - title: "运营"
+    children:
+      - title: "寻找发行商"
+        url: /game-dev/yy-distribution/
+      - title: "广告宣发"
+        url: /game-dev/yy-advertisement/
+      - title: "粉丝引流"
+        url: /game-dev/yy-fans/
 
 

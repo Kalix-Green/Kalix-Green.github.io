@@ -1,8 +1,6 @@
 ---
-title: 博客
+title: 博客档案
 layout: posts
 permalink: /posts/
 author_profile: true
 ---
-
-

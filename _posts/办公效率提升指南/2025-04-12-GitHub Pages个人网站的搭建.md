@@ -3,7 +3,7 @@ title: "GitHub Pages 个人网站的搭建"
 categories: 博客
 tags:
     - 技术
-permalink: /:categories/:title.html
+permalink: /posts/:title.html
 toc: true
 ---
 
@@ -17,7 +17,7 @@ toc: true
 
 2. WordPress
 
-3. \LaTeX本地化管理
+3. LaTeX本地化管理
 
 4. GitHub Pages
 
@@ -52,5 +52,3 @@ toc: true
 ## GitHub Pages
 
 2025年4月10日开始有这个想法，4月12日，基本部署完成，达到可用效果。中间非常的折腾，“知易行难”，看B站上面的up主的视频，感觉他们很随意就部署完成了。我是折腾了好长时间，也没有折腾个所以然，截止4月12日，核心需求部分，“博客”模块儿勉强跑起来了。勉强可用，后续还需要继续完善。
-
-
