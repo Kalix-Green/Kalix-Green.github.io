@@ -126,15 +126,15 @@ project
 
 \index{高亮示例}
 
-\hly{黄色高亮}，命令为\textbackslash ly\{text\}
+\hly{黄色高亮}，命令为\textbackslash hly\{text\}
 
-\hlr{红色高亮}，命令为\textbackslash ly\{text\}
+\hlr{红色高亮}，命令为\textbackslash hlr\{text\}
 
-\hlg{绿色高亮}，命令为\textbackslash ly\{text\}
+\hlg{绿色高亮}，命令为\textbackslash hlg\{text\}
 
-\hlp{粉红色高亮}，命令为\textbackslash ly\{text\}
+\hlp{粉红色高亮}，命令为\textbackslash hlp\{text\}
 
-\hlo{橄榄色高亮}，命令为\textbackslash ly\{text\}
+\hlo{橄榄色高亮}，命令为\textbackslash hlo\{text\}
 
 \newpage
 easyReview示例，\index{审阅功能实现}
