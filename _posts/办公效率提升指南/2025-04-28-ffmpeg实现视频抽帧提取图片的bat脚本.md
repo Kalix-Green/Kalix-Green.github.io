@@ -9,7 +9,7 @@ toc: true
 
 ## 第一步，安装FFmpeg二进制文件
 
-在如下github仓库 ***https://github.com/GyanD/codexffmpeg/releaseshttps://github.com/GyanD/codexffmpeg/releases***
+在如下github仓库 ***https://github.com/GyanD/codexffmpeg/releases***
 
 下载FFmpeg的二进制文件：***ffmpeg-7.1.1-full_build.zip***
 
