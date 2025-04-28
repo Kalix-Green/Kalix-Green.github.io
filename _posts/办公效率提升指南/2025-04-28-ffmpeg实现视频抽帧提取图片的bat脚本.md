@@ -9,11 +9,11 @@ toc: true
 
 ## 第一步，安装FFmpeg二进制文件
 
-在如下github仓库`https://github.com/GyanD/codexffmpeg/releaseshttps://github.com/GyanD/codexffmpeg/releases`
+在如下github仓库 ***https://github.com/GyanD/codexffmpeg/releaseshttps://github.com/GyanD/codexffmpeg/releases***
 
-下载FFmpeg的二进制文件：`ffmpeg-7.1.1-full_build.zip`
+下载FFmpeg的二进制文件：***ffmpeg-7.1.1-full_build.zip***
 
-解压缩到一个目录：并将` *\ffmpeg-2025-04-23\bin`添加到系统环境变量，使命令行终端下，可以执行`ffmpeg`命令。
+解压缩到一个目录：并将  ****\ffmpeg-2025-04-23\bin*** 添加到系统环境变量，使命令行终端下，可以执行`ffmpeg`命令。
 
 
 
@@ -44,5 +44,3 @@ pause
 ```powershell
 ffmpeg -i "%%a" -vf "select=not(mod(n\,15))" -vsync vfr "!fname!\output_%%04d.png"
 ```
-
-
