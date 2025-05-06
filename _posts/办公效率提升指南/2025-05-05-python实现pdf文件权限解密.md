@@ -337,7 +337,9 @@ if __name__ == '__main__':
 
 ## 执行测试：
 
-将上述代码，保存为`PDF-Password-Remover.py`文件。在Windows终端，将如下命令写入`start.bat`脚本文件，双击即可自动调用这个文件：
+将上述代码，保存为`PDF-Password-Remover.py`文件。
+
+将如下命令写入`start.bat`脚本文件，双击即可自动调用这个文件：
 
 ```powershell
 chcp 65001
