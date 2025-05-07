@@ -33,7 +33,7 @@ pip install PyQt5 PyMuPDF
 ```python
 import sys
 import os
-import fitz
+import pymupdf as fitz
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFileDialog, QMessageBox,
                              QLabel, QLineEdit, QComboBox, QRadioButton, QPushButton,
                              QHBoxLayout, QVBoxLayout, QGroupBox, QWidget)
@@ -298,7 +298,5 @@ JPG图片导出：
 PNG图片导出：
 
 ![](./../../assets/posts/pdf2image-20250506/3.png)
-
-
 
 
