@@ -33,7 +33,7 @@ pip install PyQt5 PyMuPDF
 ```python
 import sys
 import os
-import pymupdf as fitz
+import fitz
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFileDialog, QMessageBox,
                              QLabel, QLineEdit, QComboBox, QRadioButton, QPushButton,
                              QHBoxLayout, QVBoxLayout, QGroupBox, QWidget)
@@ -49,7 +49,8 @@ class WorkerThread(QThread):
         self.params = {
             'dpi': 300,
             'alpha': False,
-            'colorspace': fitz.csRGB
+            'colorspace': fitz.csRGB,
+            'output_dir': ''  # 添加默认的输出目录
         }
 
     def set_params(self, file_path, output_dir, pages, export_pdf, img_format, dpi):
@@ -84,7 +85,7 @@ class WorkerThread(QThread):
         try:
             doc = fitz.open(self.params['file_path'])
             total_pages = doc.page_count
-
+            
             valid_pages = [p-1 for p in self.params['pages'] if 0 < p <= total_pages]
             if not valid_pages:
                 raise ValueError("所有页码均超出文档范围")
@@ -93,10 +94,10 @@ class WorkerThread(QThread):
                 self._export_pdf(doc, valid_pages)
             else:
                 self._export_images(doc, valid_pages)
-
+            
             doc.close()
             self.finished.emit(True, self.params['output_dir'])
-
+        
         except Exception as e:
             self.error.emit(str(e))
 
@@ -139,14 +140,14 @@ class PdfToolApp(QMainWindow):
     def init_ui(self):
         self.setWindowTitle('PDF文档提取及导出图片小工具 v1.0')
         self.setGeometry(300, 300, 600, 320)
-
+        
         # 文件选择组
         file_group = QGroupBox("文件操作")
         self.txt_file = QLineEdit()
         self.txt_file.setPlaceholderText("拖拽PDF文件到此或点击浏览...")
         btn_browse = QPushButton("浏览")
         btn_browse.clicked.connect(self._browse_file)
-
+        
         # 输出设置组
         output_group = QGroupBox("输出设置")
         self.txt_output = QLineEdit()
@@ -173,18 +174,18 @@ class PdfToolApp(QMainWindow):
         output_layout.addWidget(QLabel("输出目录:"))
         output_layout.addWidget(self.txt_output)
         output_layout.addWidget(btn_output)
-
+        
         pages_layout = QHBoxLayout()
         pages_layout.addWidget(QLabel("页码范围:"))
         pages_layout.addWidget(self.txt_pages)
-
+        
         format_layout = QHBoxLayout()
         format_layout.addWidget(self.rad_pdf)
         format_layout.addWidget(self.rad_img)
         format_layout.addWidget(self.cmb_format)
         format_layout.addWidget(QLabel("DPI:"))
         format_layout.addWidget(self.cmb_dpi)
-
+        
         output_group.setLayout(output_layout)
         output_layout.addLayout(pages_layout)
         output_layout.addLayout(format_layout)
@@ -193,18 +194,22 @@ class PdfToolApp(QMainWindow):
         main_layout = QVBoxLayout()
         main_layout.addWidget(file_group)
         main_layout.addWidget(output_group)
-
+        
         central_widget = QWidget()
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
     def _connect_signals(self):
+        # 确保初始状态下，如果选择了PDF导出，则禁用格式选择
+        self.cmb_format.setEnabled(self.rad_img.isChecked())
+        
         self.rad_pdf.toggled.connect(lambda: self.cmb_format.setEnabled(False))
         self.rad_img.toggled.connect(lambda: self.cmb_format.setEnabled(True))
+        
         btn_execute = QPushButton("开始转换", self)
         btn_execute.clicked.connect(self._start_conversion)
         self.centralWidget().layout().addWidget(btn_execute)
-
+        
         self.worker.finished.connect(self._on_finished)
         self.worker.error.connect(self._show_error)
 
@@ -215,7 +220,8 @@ class PdfToolApp(QMainWindow):
     def dropEvent(self, event: QDropEvent):
         for url in event.mimeData().urls():
             if url.isLocalFile() and url.fileName().lower().endswith('.pdf'):
-                self.txt_file.setText(url.toLocalFile())
+                # 使用 os.path.normpath 统一路径分隔符
+                self.txt_file.setText(os.path.normpath(url.toLocalFile()))
                 break
 
     def _browse_file(self):
@@ -237,11 +243,11 @@ class PdfToolApp(QMainWindow):
             'img_format': self.cmb_format.currentText(),
             'dpi': int(self.cmb_dpi.currentText().split()[0])
         }
-
+        
         if not os.path.exists(params['file_path']):
             QMessageBox.warning(self, "错误", "PDF文件路径无效")
             return
-
+            
         if not os.path.exists(params['output_dir']):
             os.makedirs(params['output_dir'], exist_ok=True)
 
@@ -265,6 +271,7 @@ if __name__ == "__main__":
     window = PdfToolApp()
     window.show()
     sys.exit(app.exec_())
+
 ```
 
 ## 执行测试：
@@ -298,5 +305,3 @@ JPG图片导出：
 PNG图片导出：
 
 ![](./../../assets/posts/pdf2image-20250506/3.png)
-
-

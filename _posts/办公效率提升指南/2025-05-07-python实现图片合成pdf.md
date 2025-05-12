@@ -31,291 +31,316 @@ pip install PyQt5 Pillow psutil
 ## 基本可用代码如下：
 
 ```python
-# image_to_pdf_final.py
 import sys
 import os
-import platform
+import re
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image, ImageOps
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                             QHBoxLayout, QPushButton, QFileDialog, QListWidget,
                             QLabel, QProgressDialog, QGroupBox, QCheckBox,
-                            QSlider, QComboBox, QMessageBox, QSplitter)
+                            QSlider, QComboBox, QMessageBox, QSplitter,
+                            QListWidgetItem)
 from PyQt5.QtCore import Qt, QDir, QSize
 from PyQt5.QtGui import QPixmap, QImage
-
-# 添加内存优化模块
-try:
-    import psutil
-except ImportError:
-    psutil = None
 
 class ImageToPDFConverter(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.preview_size = QSize(300, 400)  # 提前初始化预览尺寸
-        self.init_ui()
+        self.preview_size = QSize(300, 400)  # 保持QSize定义
         self.image_files = []
         self.current_dir = ""
-
-        # 初始化默认设置
         self.settings = {
             'resolution': 300,
             'compression': 75,
             'page_size': '原始尺寸',
             'auto_rotate': True
         }
+        self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle('高级图像转PDF工具')
+        self.setWindowTitle('图片转PDF工具')
         self.setGeometry(300, 300, 1000, 600)
-
+        
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
-
-        # 主布局
-        main_layout = QHBoxLayout()
+        main_layout = QHBoxLayout(main_widget)
+        
         splitter = QSplitter(Qt.Horizontal)
-
-        # 左侧控制面板
+        
+        # 左侧面板
         left_panel = QWidget()
-        left_layout = QVBoxLayout()
-
-        # 目录选择区域
-        dir_group = QGroupBox("目录设置")
-        dir_layout = QVBoxLayout()
-        self.btn_choose = QPushButton("选择图片目录", self)
+        left_layout = QVBoxLayout(left_panel)
+        
+        # 文件管理区域
+        dir_group = QGroupBox("文件管理")
+        dir_layout = QVBoxLayout(dir_group)
+        self.btn_choose = QPushButton("选择目录")
         self.btn_choose.clicked.connect(self.choose_directory)
         self.lbl_dir = QLabel("未选择目录")
+        
+        btn_group = QHBoxLayout()
+        self.btn_add_files = QPushButton("添加文件")
+        self.btn_remove_selected = QPushButton("移除选中")
+        self.btn_clear_list = QPushButton("清空列表")
+        btn_group.addWidget(self.btn_add_files)
+        btn_group.addWidget(self.btn_remove_selected)
+        btn_group.addWidget(self.btn_clear_list)
+        
         dir_layout.addWidget(self.btn_choose)
         dir_layout.addWidget(self.lbl_dir)
-        dir_group.setLayout(dir_layout)
-
-        # 文件列表区域
+        dir_layout.addLayout(btn_group)
+        
+        # 文件列表
         self.list_widget = QListWidget()
         self.list_widget.setDragDropMode(QListWidget.InternalMove)
         self.list_widget.itemSelectionChanged.connect(self.show_preview)
-
-        # 右侧预览区域
-        right_panel = QWidget()
-        right_layout = QVBoxLayout()
-        self.preview_label = QLabel("图片预览")
-        self.preview_label.setAlignment(Qt.AlignCenter)
-        self.preview_label.setFixedSize(self.preview_size)  # 使用已初始化的尺寸
-        right_layout.addWidget(self.preview_label)
-
+        
         # 设置区域
         settings_group = QGroupBox("转换设置")
-        settings_layout = QVBoxLayout()
-
-        # 页面尺寸选择
+        settings_layout = QVBoxLayout(settings_group)
         self.page_size_combo = QComboBox()
-        self.page_size_combo.addItems(["原始尺寸", "A4 (210x297mm)", "Letter (216x279mm)", "自定义"])
-        self.page_size_combo.currentIndexChanged.connect(self.update_settings)
-
-        # 压缩设置
+        self.page_size_combo.addItems(["原始尺寸", "A4 (210x297mm)", "Letter (216x279mm)"])
         self.compression_check = QCheckBox("启用压缩")
         self.compression_slider = QSlider(Qt.Horizontal)
         self.compression_slider.setRange(1, 100)
         self.compression_slider.setValue(75)
-
-        # 自动旋转
-        self.rotate_check = QCheckBox("自动旋转（根据EXIF）")
+        self.rotate_check = QCheckBox("自动旋转")
         self.rotate_check.setChecked(True)
-
+        
         settings_layout.addWidget(QLabel("页面尺寸:"))
         settings_layout.addWidget(self.page_size_combo)
         settings_layout.addWidget(self.compression_check)
         settings_layout.addWidget(self.compression_slider)
         settings_layout.addWidget(self.rotate_check)
-        settings_group.setLayout(settings_layout)
-
-        # 组装布局
+        
+        # 组装左侧布局
         left_layout.addWidget(dir_group)
-        left_layout.addWidget(QLabel("图片列表（拖拽排序）:"))
+        left_layout.addWidget(QLabel("文件列表:"))
         left_layout.addWidget(self.list_widget)
         left_layout.addWidget(settings_group)
-
-        # 操作按钮
-        self.btn_convert = QPushButton("开始转换", self)
+        
+        # 右侧预览区域
+        right_panel = QWidget()
+        right_layout = QVBoxLayout(right_panel)
+        self.preview_label = QLabel("预览区域")
+        self.preview_label.setAlignment(Qt.AlignCenter)
+        self.preview_label.setFixedSize(self.preview_size)  # 正确使用QSize
+        right_layout.addWidget(self.preview_label)
+        
+        # 转换按钮
+        self.btn_convert = QPushButton("开始转换")
         self.btn_convert.clicked.connect(self.convert_to_pdf)
         left_layout.addWidget(self.btn_convert)
-
-        left_panel.setLayout(left_layout)
-        right_panel.setLayout(right_layout)
-
+        
+        # 连接按钮事件
+        self.btn_add_files.clicked.connect(self.add_single_file)
+        self.btn_remove_selected.clicked.connect(self.remove_selected_files)
+        self.btn_clear_list.clicked.connect(self.clear_file_list)
+        
         splitter.addWidget(left_panel)
         splitter.addWidget(right_panel)
         main_layout.addWidget(splitter)
-        main_widget.setLayout(main_layout)
 
-        # 高DPI支持
-        if hasattr(Qt, 'AA_EnableHighDpiScaling'):
-            QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-            QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+    def show_preview(self):
+        """修复尺寸转换错误的预览方法"""
+        if not self.list_widget.currentItem():
+            self.preview_label.clear()
+            return
 
+        try:
+            # 获取完整路径
+            filename = self.list_widget.currentItem().text()
+            full_path = os.path.join(self.current_dir, filename) if self.current_dir else filename
+            
+            with Image.open(full_path) as img:
+                # 自动旋转
+                if self.settings['auto_rotate']:
+                    img = ImageOps.exif_transpose(img)
+                
+                # 修复：将QSize转换为元组
+                thumbnail_size = (
+                    self.preview_size.width(), 
+                    self.preview_size.height()
+                )
+                img.thumbnail(thumbnail_size)  # 使用元组参数
+                
+                # 处理透明通道
+                if img.mode == 'RGBA':
+                    background = Image.new('RGB', img.size, (255, 255, 255))
+                    background.paste(img, mask=img.split()[3])
+                    img = background
+                elif img.mode not in ['RGB', 'L']:
+                    img = img.convert('RGB')
+
+                # 转换为QImage
+                if img.mode == 'RGB':
+                    format = QImage.Format_RGB888
+                    bytes_per_line = img.width * 3
+                elif img.mode == 'L':
+                    format = QImage.Format_Grayscale8
+                    bytes_per_line = img.width
+                else:
+                    format = QImage.Format_RGBA8888
+                    bytes_per_line = img.width * 4
+
+                qimg = QImage(img.tobytes(), img.width, img.height, 
+                            bytes_per_line, format)
+
+                # 保持宽高比缩放
+                pixmap = QPixmap.fromImage(qimg).scaled(
+                    self.preview_size.width(), 
+                    self.preview_size.height(),
+                    Qt.KeepAspectRatio,
+                    Qt.SmoothTransformation
+                )
+                self.preview_label.setPixmap(pixmap)
+
+        except Exception as e:
+            QMessageBox.warning(self, "预览错误", f"{str(e)}")
+            self.preview_label.setText("预览不可用")
+
+    # 其他保持不变的方法...
     def choose_directory(self):
-        """目录选择方法实现"""
-        directory = QFileDialog.getExistingDirectory(self, "选择图片目录", QDir.homePath())
+        directory = QFileDialog.getExistingDirectory(self, "选择目录", QDir.homePath())
         if directory:
             self.current_dir = directory
             self.lbl_dir.setText(directory)
             self.scan_image_files(directory)
 
     def scan_image_files(self, directory):
-        """扫描图片文件"""
-        valid_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.webp']
-        self.image_files = [f for f in os.listdir(directory) 
-                          if os.path.splitext(f)[1].lower() in valid_extensions]
-        self.image_files.sort()
+        valid_ext = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.webp']
+        
+        def natural_sort(s):
+            return [int(c) if c.isdigit() else c.lower() for c in re.split(r'(\d+)', s)]
+        
+        files = sorted(
+            [f for f in os.listdir(directory) if os.path.splitext(f)[1].lower() in valid_ext],
+            key=natural_sort
+        )
+        self.image_files = files
+        self.update_file_list()
 
+    def update_file_list(self):
         self.list_widget.clear()
-        self.list_widget.addItems(self.image_files)
+        for f in self.image_files:
+            item = QListWidgetItem(f)
+            item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+            item.setCheckState(Qt.Checked)
+            self.list_widget.addItem(item)
 
-    def get_ordered_files(self):
-        """获取排序后的文件列表"""
-        return [self.list_widget.item(i).text() for i in range(self.list_widget.count())]
+    def add_single_file(self):
+        files, _ = QFileDialog.getOpenFileNames(self, "选择文件", 
+            self.current_dir or QDir.homePath(),
+            "图片文件 (*.jpg *.jpeg *.png *.bmp *.tiff *.webp)")
+        if files:
+            if self.current_dir:
+                new_files = [os.path.relpath(f, self.current_dir) for f in files]
+            else:
+                new_files = files
+                self.current_dir = os.path.dirname(files[0])
+                self.lbl_dir.setText(self.current_dir)
+            
+            self.image_files.extend(new_files)
+            self.update_file_list()
 
-    def process_image(self, filepath):
-        """多线程图像处理核心方法"""
-        try:
-            img = Image.open(filepath)
+    def remove_selected_files(self):
+        selected = sorted([self.list_widget.row(item) for item in self.list_widget.selectedItems()], reverse=True)
+        for row in selected:
+            del self.image_files[row]
+        self.update_file_list()
 
-            # 自动旋转处理
-            if self.settings['auto_rotate']:
-                img = ImageOps.exif_transpose(img)
-
-            # 颜色模式转换
-            if img.mode in ('RGBA', 'LA'):
-                background = Image.new('RGB', img.size, (255, 255, 255))
-                background.paste(img, mask=img.split()[-1])
-                img = background
-
-            # 页面尺寸调整
-            if self.settings['page_size'] != '原始尺寸':
-                img = self.resize_image(img)
-
-            return img
-        except Exception as e:
-            print(f"处理失败: {filepath} - {str(e)}")
-            return None
-
-    def resize_image(self, img):
-        """根据设置调整图像尺寸"""
-        dpi = self.settings['resolution']
-
-        if 'A4' in self.settings['page_size']:
-            target_size = (int(210 * dpi / 25.4), int(297 * dpi / 25.4))
-        elif 'Letter' in self.settings['page_size']:
-            target_size = (int(216 * dpi / 25.4), int(279 * dpi / 25.4))
-        else:
-            return img
-
-        # 保持宽高比调整
-        img.thumbnail(target_size, Image.LANCZOS)
-        return img
-
-    def check_memory(self, required_mb):
-        """内存检查（需要psutil）"""
-        if psutil:
-            mem = psutil.virtual_memory()
-            return mem.available >= required_mb * 1024 * 1024
-        return True
+    def clear_file_list(self):
+        self.image_files.clear()
+        self.list_widget.clear()
 
     def convert_to_pdf(self):
-        """增强版PDF转换方法"""
         if not self.image_files:
-            QMessageBox.warning(self, "错误", "没有找到可用的图片文件！")
+            QMessageBox.warning(self, "错误", "请先添加图片文件")
             return
-
-        save_path, _ = QFileDialog.getSaveFileName(self, "保存PDF文件", 
-                                                 os.path.join(self.current_dir, "output.pdf"), 
-                                                 "PDF Files (*.pdf)")
+        
+        save_path, _ = QFileDialog.getSaveFileName(self, "保存PDF", 
+                                                 QDir.homePath(), 
+                                                 "PDF文件 (*.pdf)")
         if not save_path:
             return
-
+        
+        files = [os.path.join(self.current_dir, f) for f in self.get_checked_files()]
+        
+        progress = QProgressDialog("转换中...", "取消", 0, len(files), self)
+        progress.setWindowModality(Qt.WindowModal)
+        
         try:
-            progress = QProgressDialog("正在转换PDF...", "取消", 0, len(self.image_files), self)
-            progress.setWindowModality(Qt.WindowModal)
-
-            # 估算所需内存（每张图片约10MB）
-            if not self.check_memory(len(self.image_files) * 10):
-                QMessageBox.warning(self, "内存不足", "可用内存不足，请减少处理图片数量")
-                return
-
             with ThreadPoolExecutor() as executor:
                 futures = []
                 images = []
-
-                for i, filename in enumerate(self.get_ordered_files()):
-                    filepath = os.path.join(self.current_dir, filename)
-                    futures.append(executor.submit(self.process_image, filepath))
-
+                
+                for file_path in files:
+                    futures.append(executor.submit(self.process_image, file_path))
+                
                 for i, future in enumerate(futures):
-                    progress.setValue(i)
                     if progress.wasCanceled():
                         break
+                    progress.setValue(i)
                     img = future.result()
-                    if img is not None:
+                    if img:
                         images.append(img)
-
+                
                 if images:
-                    save_args = {
-                        'save_all': True,
-                        'append_images': images[1:],
-                        'resolution': self.settings['resolution']
-                    }
-                    if self.compression_check.isChecked():
-                        save_args['quality'] = self.settings['compression']
-
-                    images[0].save(save_path, "PDF", **save_args)
-                    QMessageBox.information(self, "完成", f"PDF文件已保存至：\n{save_path}")
-
+                    images[0].save(save_path, "PDF", 
+                                 resolution=self.settings['resolution'],
+                                 save_all=True, 
+                                 append_images=images[1:],
+                                 quality=self.settings['compression'])
+                    QMessageBox.information(self, "完成", "转换成功!")
         except Exception as e:
-            QMessageBox.critical(self, "错误", f"转换失败：{str(e)}")
+            QMessageBox.critical(self, "错误", f"转换失败: {str(e)}")
         finally:
             progress.close()
 
-    def show_preview(self):
-        """图片预览功能实现"""
-        selected = self.list_widget.currentItem()
-        if not selected or not self.current_dir:
-            return
-
-        filepath = os.path.join(self.current_dir, selected.text())
+    def process_image(self, file_path):
         try:
-            # 加载并处理图片
-            img = Image.open(filepath)
-            img.thumbnail((self.preview_size.width(), self.preview_size.height()))
-
-            # 转换为Qt兼容格式
-            if img.mode == "RGB":
-                qimage = QImage(img.tobytes(), img.size[0], img.size[1], 
-                               img.size[0]*3, QImage.Format_RGB888)
-            elif img.mode == "RGBA":
-                qimage = QImage(img.tobytes(), img.size[0], img.size[1], 
-                               img.size[0]*4, QImage.Format_RGBA8888)
-            else:
-                img = img.convert("RGB")
-                qimage = QImage(img.tobytes(), img.size[0], img.size[1], 
-                               img.size[0]*3, QImage.Format_RGB888)
-
-            self.preview_label.setPixmap(QPixmap.fromImage(qimage))
+            img = Image.open(file_path)
+            if self.settings['auto_rotate']:
+                img = ImageOps.exif_transpose(img)
+            
+            img = self.resize_image(img)
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
+            return img
         except Exception as e:
-            print(f"预览失败: {str(e)}")
+            QMessageBox.warning(self, "错误", f"处理失败: {os.path.basename(file_path)}\n{str(e)}")
+            return None
 
-    def update_settings(self):
-        """同步界面设置到参数"""
-        self.settings.update({
-            'page_size': self.page_size_combo.currentText(),
-            'compression': self.compression_slider.value(),
-            'auto_rotate': self.rotate_check.isChecked()
-        })
+    def resize_image(self, img):
+        size_map = {
+            'A4 (210x297mm)': (2480, 3508),
+            'Letter (216x279mm)': (2550, 3300)
+        }
+        target = self.settings['page_size']
+        
+        if target == '原始尺寸':
+            return img
+        
+        if target in size_map:
+            img.thumbnail(size_map[target])
+        return img
+
+    def get_checked_files(self):
+        return [self.list_widget.item(i).text() 
+               for i in range(self.list_widget.count())
+               if self.list_widget.item(i).checkState() == Qt.Checked]
 
 if __name__ == '__main__':
+    # 高DPI设置
+    if hasattr(Qt, 'AA_EnableHighDpiScaling'):
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+    
     app = QApplication(sys.argv)
-    ex = ImageToPDFConverter()
-    ex.show()
+    window = ImageToPDFConverter()
+    window.show()
     sys.exit(app.exec_())
 ```
 
