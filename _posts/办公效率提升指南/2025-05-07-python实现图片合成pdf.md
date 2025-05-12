@@ -61,24 +61,24 @@ class ImageToPDFConverter(QMainWindow):
     def init_ui(self):
         self.setWindowTitle('图片转PDF工具')
         self.setGeometry(300, 300, 1000, 600)
-        
+
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
         main_layout = QHBoxLayout(main_widget)
-        
+
         splitter = QSplitter(Qt.Horizontal)
-        
+
         # 左侧面板
         left_panel = QWidget()
         left_layout = QVBoxLayout(left_panel)
-        
+
         # 文件管理区域
         dir_group = QGroupBox("文件管理")
         dir_layout = QVBoxLayout(dir_group)
         self.btn_choose = QPushButton("选择目录")
         self.btn_choose.clicked.connect(self.choose_directory)
         self.lbl_dir = QLabel("未选择目录")
-        
+
         btn_group = QHBoxLayout()
         self.btn_add_files = QPushButton("添加文件")
         self.btn_remove_selected = QPushButton("移除选中")
@@ -86,16 +86,16 @@ class ImageToPDFConverter(QMainWindow):
         btn_group.addWidget(self.btn_add_files)
         btn_group.addWidget(self.btn_remove_selected)
         btn_group.addWidget(self.btn_clear_list)
-        
+
         dir_layout.addWidget(self.btn_choose)
         dir_layout.addWidget(self.lbl_dir)
         dir_layout.addLayout(btn_group)
-        
+
         # 文件列表
         self.list_widget = QListWidget()
         self.list_widget.setDragDropMode(QListWidget.InternalMove)
         self.list_widget.itemSelectionChanged.connect(self.show_preview)
-        
+
         # 设置区域
         settings_group = QGroupBox("转换设置")
         settings_layout = QVBoxLayout(settings_group)
@@ -107,19 +107,19 @@ class ImageToPDFConverter(QMainWindow):
         self.compression_slider.setValue(75)
         self.rotate_check = QCheckBox("自动旋转")
         self.rotate_check.setChecked(True)
-        
+
         settings_layout.addWidget(QLabel("页面尺寸:"))
         settings_layout.addWidget(self.page_size_combo)
         settings_layout.addWidget(self.compression_check)
         settings_layout.addWidget(self.compression_slider)
         settings_layout.addWidget(self.rotate_check)
-        
+
         # 组装左侧布局
         left_layout.addWidget(dir_group)
         left_layout.addWidget(QLabel("文件列表:"))
         left_layout.addWidget(self.list_widget)
         left_layout.addWidget(settings_group)
-        
+
         # 右侧预览区域
         right_panel = QWidget()
         right_layout = QVBoxLayout(right_panel)
@@ -127,17 +127,17 @@ class ImageToPDFConverter(QMainWindow):
         self.preview_label.setAlignment(Qt.AlignCenter)
         self.preview_label.setFixedSize(self.preview_size)  # 正确使用QSize
         right_layout.addWidget(self.preview_label)
-        
+
         # 转换按钮
         self.btn_convert = QPushButton("开始转换")
         self.btn_convert.clicked.connect(self.convert_to_pdf)
         left_layout.addWidget(self.btn_convert)
-        
+
         # 连接按钮事件
         self.btn_add_files.clicked.connect(self.add_single_file)
         self.btn_remove_selected.clicked.connect(self.remove_selected_files)
         self.btn_clear_list.clicked.connect(self.clear_file_list)
-        
+
         splitter.addWidget(left_panel)
         splitter.addWidget(right_panel)
         main_layout.addWidget(splitter)
@@ -152,19 +152,19 @@ class ImageToPDFConverter(QMainWindow):
             # 获取完整路径
             filename = self.list_widget.currentItem().text()
             full_path = os.path.join(self.current_dir, filename) if self.current_dir else filename
-            
+
             with Image.open(full_path) as img:
                 # 自动旋转
                 if self.settings['auto_rotate']:
                     img = ImageOps.exif_transpose(img)
-                
+
                 # 修复：将QSize转换为元组
                 thumbnail_size = (
                     self.preview_size.width(), 
                     self.preview_size.height()
                 )
                 img.thumbnail(thumbnail_size)  # 使用元组参数
-                
+
                 # 处理透明通道
                 if img.mode == 'RGBA':
                     background = Image.new('RGB', img.size, (255, 255, 255))
@@ -210,10 +210,10 @@ class ImageToPDFConverter(QMainWindow):
 
     def scan_image_files(self, directory):
         valid_ext = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.webp']
-        
+
         def natural_sort(s):
             return [int(c) if c.isdigit() else c.lower() for c in re.split(r'(\d+)', s)]
-        
+
         files = sorted(
             [f for f in os.listdir(directory) if os.path.splitext(f)[1].lower() in valid_ext],
             key=natural_sort
@@ -240,7 +240,7 @@ class ImageToPDFConverter(QMainWindow):
                 new_files = files
                 self.current_dir = os.path.dirname(files[0])
                 self.lbl_dir.setText(self.current_dir)
-            
+
             self.image_files.extend(new_files)
             self.update_file_list()
 
@@ -258,26 +258,26 @@ class ImageToPDFConverter(QMainWindow):
         if not self.image_files:
             QMessageBox.warning(self, "错误", "请先添加图片文件")
             return
-        
+
         save_path, _ = QFileDialog.getSaveFileName(self, "保存PDF", 
                                                  QDir.homePath(), 
                                                  "PDF文件 (*.pdf)")
         if not save_path:
             return
-        
+
         files = [os.path.join(self.current_dir, f) for f in self.get_checked_files()]
-        
+
         progress = QProgressDialog("转换中...", "取消", 0, len(files), self)
         progress.setWindowModality(Qt.WindowModal)
-        
+
         try:
             with ThreadPoolExecutor() as executor:
                 futures = []
                 images = []
-                
+
                 for file_path in files:
                     futures.append(executor.submit(self.process_image, file_path))
-                
+
                 for i, future in enumerate(futures):
                     if progress.wasCanceled():
                         break
@@ -285,7 +285,7 @@ class ImageToPDFConverter(QMainWindow):
                     img = future.result()
                     if img:
                         images.append(img)
-                
+
                 if images:
                     images[0].save(save_path, "PDF", 
                                  resolution=self.settings['resolution'],
@@ -303,7 +303,7 @@ class ImageToPDFConverter(QMainWindow):
             img = Image.open(file_path)
             if self.settings['auto_rotate']:
                 img = ImageOps.exif_transpose(img)
-            
+
             img = self.resize_image(img)
             if img.mode != 'RGB':
                 img = img.convert('RGB')
@@ -318,10 +318,10 @@ class ImageToPDFConverter(QMainWindow):
             'Letter (216x279mm)': (2550, 3300)
         }
         target = self.settings['page_size']
-        
+
         if target == '原始尺寸':
             return img
-        
+
         if target in size_map:
             img.thumbnail(size_map[target])
         return img
@@ -337,7 +337,7 @@ if __name__ == '__main__':
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
     if hasattr(Qt, 'AA_UseHighDpiPixmaps'):
         QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
-    
+
     app = QApplication(sys.argv)
     window = ImageToPDFConverter()
     window.show()
