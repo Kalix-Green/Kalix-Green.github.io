@@ -181,6 +181,18 @@ software-guide:
 
 #learning-notes，学习笔记
 learning-notes:
+  - title: "狗头人系列丛书"
+    children:
+      - title: "狗头人之世界创建指南1"
+        url: /learning-notes/zhuoyoushuji-sjcjzn1-zh/
+      - title: "The kobold guide to worldbuilding1"
+        url: /learning-notes/zhuoyoushuji-sjcjzn1-en/
+    # - title:
+        # url:
+    # - title:
+        # url:
+    # - title:
+        # url:
   - title: "人工智能"
     children:
       - title: "AI精英培训班1"
