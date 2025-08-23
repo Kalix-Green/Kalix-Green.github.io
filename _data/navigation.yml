@@ -183,16 +183,50 @@ software-guide:
 learning-notes:
   - title: "狗头人系列丛书"
     children:
+      - title: "狗头人之桌游设计指南"
+        url: /learning-notes/zhuoyoushuji-zysjzn-zh/
+      - title: "The kobold guide to board game design"
+        url: /learning-notes/zhuoyoushuji-zysjzn-en/
       - title: "狗头人之世界创建指南1"
         url: /learning-notes/zhuoyoushuji-sjcjzn1-zh/
       - title: "The kobold guide to worldbuilding1"
         url: /learning-notes/zhuoyoushuji-sjcjzn1-en/
-    # - title:
-        # url:
-    # - title:
-        # url:
-    # - title:
-        # url:
+      - title: "狗头人之世界创建指南2"
+        url: /learning-notes/zhuoyoushuji-sjcjzn2-zh/
+      - title: "The kobold guide to worldbuilding2"
+        url: /learning-notes/zhuoyoushuji-sjcjzn2-en/
+      - title: "狗头人之游戏主持指南"
+        url: /learning-notes/zhuoyoushuji-yxzczn-zh/
+      - title: "Kobold guide to gamemastering"
+        url: /learning-notes/zhuoyoushuji-yxzczn-en/
+      - title: "狗头人之魔法指南"
+        url: /learning-notes/zhuoyoushuji-mfzn-zh/
+      - title: "Kobold guide to magic"
+        url: /learning-notes/zhuoyoushuji-mfzn-en/
+      - title: "狗头人之剧情和战役指南"
+        url: /learning-notes/zhuoyoushuji-jqzyzn-zh/
+      - title: "Kobold guide to plots and campaigns"
+        url: /learning-notes/zhuoyoushuji-jqzyzn-en/
+      - title: "狗头人之角色扮演指南"
+        url: /learning-notes/zhuoyoushuji-jsbyzn-zh/
+      - title: "Kobold guide to roleplaying"
+        url: /learning-notes/zhuoyoushuji-jsbyzn-en/
+      - title: "狗头人之怪物指南"
+        url: /learning-notes/zhuoyoushuji-gwzn-zh/
+      - title: "Kobold guide to monsters"
+        url: /learning-notes/zhuoyoushuji-gwzn-en/
+      - title: "狗头人之战斗指南"
+        url: /learning-notes/zhuoyoushuji-zdzn-zh/
+      - title: "Kobold guide to combat"
+        url: /learning-notes/zhuoyoushuji-zdzn-en/
+      - title: "狗头人之游戏设计指南1"
+        url: /learning-notes/zhuoyoushuji-yxsjzn1-zh/
+      - title: "Complete kobold guide to game design 1"
+        url: /learning-notes/zhuoyoushuji-yxsjzn1-en/
+      - title: "狗头人之游戏设计指南2"
+        url: /learning-notes/zhuoyoushuji-yxsjzn2-zh/
+      - title: "Complete kobold guide to game design 2"
+        url: /learning-notes/zhuoyoushuji-yxsjzn2-en/
   - title: "人工智能"
     children:
       - title: "AI精英培训班1"
